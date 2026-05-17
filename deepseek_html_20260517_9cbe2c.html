@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>KVEZOV | NEON ZERO MARKET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0a0a0f, #010102);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: #e0e6f0;
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* глитч-эффекты и сканер */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.02) 0px, rgba(0, 255, 255, 0.02) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(#0ff1 1px, transparent 1px),
+                linear-gradient(90deg, #0ff1 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* header с логотипом */
+        .logo-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #0ff3;
+            padding-bottom: 1.5rem;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff, #0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px #0ff5;
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            color: #0ffa;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            text-shadow: none;
+        }
+
+        .status-badge {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0f1fcc;
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            border-radius: 32px;
+            border-left: 3px solid #0ff;
+            font-size: 0.75rem;
+            color: #0ff;
+        }
+
+        /* карточки с услугами */
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: rgba(8, 12, 25, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 28px;
+            padding: 1.6rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            border-color: #0ff;
+            box-shadow: 0 0 18px rgba(0, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .service-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .price-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0ff;
+            text-shadow: 0 0 3px #0ff;
+        }
+
+        .price-unit {
+            font-size: 0.9rem;
+            color: #8e9aaf;
+        }
+
+        .desc {
+            margin: 1rem 0;
+            color: #b9c4dd;
+            font-size: 0.9rem;
+            border-left: 2px solid #0ff4;
+            padding-left: 0.8rem;
+        }
+
+        .stars-badge {
+            display: inline-block;
+            background: #1e2a3a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: monospace;
+            color: #ffd966;
+        }
+
+        hr {
+            border-color: #0ff2;
+            margin: 1.2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title:before {
+            content: ">";
+            color: #0ff;
+            font-weight: bold;
+            font-size: 1.6rem;
+        }
+
+        .info-block {
+            background: #05080faa;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid #0ff3;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .stars-rate {
+            background: #0f1222;
+            border-radius: 60px;
+            padding: 1rem 1.8rem;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            border: 1px solid #ffcc3355;
+        }
+
+        .btn-telegram {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #1f2a48;
+            background: linear-gradient(95deg, #0a1a2a, #0a0e1a);
+            border: 1px solid #0ff;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+            margin: 2rem 0 1rem;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-telegram:hover {
+            background: #0ff2;
+            border-color: cyan;
+            box-shadow: 0 0 15px cyan;
+            transform: scale(1.02);
+        }
+
+        .glowing-text {
+            color: #0ff;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            font-family: monospace;
+            border-top: 1px solid #0ff2;
+            padding-top: 2rem;
+        }
+
+        /* лор-блок в стиле erafox */
+        .lore-terminal {
+            background: #01010ccc;
+            border-radius: 20px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            margin-top: 2rem;
+            border-left: 4px solid #0ff;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .lore-terminal pre {
+            color: #9effff;
+            margin: 0;
+            font-family: monospace;
+        }
+
+        @media (max-width: 720px) {
+            .container {
+                padding: 1rem;
+            }
+            .service-title {
+                font-size: 1.3rem;
+            }
+            .price-tag {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="cyber-grid"></div>
+<div class="container">
+    <div class="logo-area">
+        <div class="logo">
+            KVEZOV<span> // Kvezov ZERO BLACK MARKET</span>
+        </div>
+        <div class="status-badge">
+            [ 🔥 ACTIVE ] :: encrypted channel
+        </div>
+    </div>
+
+    <!-- блок с ценами на снос и услуги -->
+    <div class="price-grid">
+        <div class="card">
+            <div class="service-title">⚡ СНОС / ЛИКВИДАЦИЯ</div>
+            <div class="price-tag">399₽ либо 400 звезд <span class="price-unit">(6-10 ч)</span></div>
+            <div class="desc">Стандартный протокол. Полная анонимизация, гарантия чистой работы.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">🔥 СНОС Plus</div>
+            <div class="price-tag">699₽ либо 700 звезд<span class="price-unit">(4-8 ч)</span></div>
+            <div class="desc">Приоритетный режим. Ускоренные векторы исполнения.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">💀 МОЛНИЯ</div>
+            <div class="price-tag">1000₽ либо 1000 звезд <span class="price-unit">(5-15 мин)</span></div>
+            <div class="desc">Мгновенный снос по требованию. Кинетический байпас.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">🕵️ ДОКС (FULL INFO)</div>
+            <div class="price-tag"><span style="font-size:1.3rem;"> 200₽ либо 200⭐</span></div>
+            <div class="desc">📍 место жительства, школа, работа, номера родителей. Полный инфопакет.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">📱 BOOMBER</div>
+            <div class="price-tag">85₽ либо 85⭐ <span class="price-unit">(15 минут)</span></div>
+            <div class="desc">SMS-шторм / взрывная нагрузка на номер. Скрытый режим.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">🐍 ДЕФ / CLASSIC</div>
+            <div class="price-tag">100₽ либо 100⭐</div>
+            <div class="desc">Базовый дефейс с визуальным подтверждением.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">🐉 ДЕФ / PLUS</div>
+            <div class="price-tag">150₽ либо 150⭐</div>
+            <div class="desc">Расширенный дефейс + логгирование трафика.</div>
+        </div>
+        <div class="card">
+            <div class="service-title">👾 ДЕФ / VIP</div>
+            <div class="price-tag">250₽ либо 250⭐</div>
+            <div class="desc">Полный ребрендинг, персистентный доступ, роскошный эксплойт.</div>
+        </div>
+    </div>
+
+    <!-- Аккаунты -->
+    <div class="section-title">АККАУНТЫ (ФИЗ / ОТЛЁГА / 2019)</div>
+    <div class="info-block" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div><span class="glowing-text">🌎 Америка · Колумбия · другие регионы</span> — готовые сессии, высокий рейтинг.</div>
+        <div style="font-family: monospace;">➜ Писать в ЛС: <span style="color:#0ff;">@KvezovOfficial</span></div>
+    </div>
+
+    <!-- курс звёзд + цены -->
+    <div class="stars-rate">
+        ⭐ ЗВЁЗДЫ : <span style="font-size:1.5rem; font-weight:800;">1.25 ₽</span> за 1 звезду
+        <span style="margin-left: 12px; font-size:0.75rem;">[ минимальная партия — 20 ⭐ ]</span>
+    </div>
+
+    <div class="info-block" style="background: #03050bc9; text-align: center;">
+        💎 <span class="glowing-text">Где вы найдёте ещё такие цены?</span> Только в <strong style="color:#0ff;">@KvezovOfficial</strong><br>
+        💰 Принимаю оплату исключительно в <span style="border-bottom: 1px dashed cyan;">РУБЛЯХ</span> и <span style="border-bottom: 1px dashed gold;">ЗВЁЗДАХ</span> 🌟
+    </div>
+
+    <!-- кибер-кнопка на телеграм канал -->
+    <div style="text-align: center; margin: 2rem 0;">
+        <a href="https://t.me/KvezovOfficial" target="_blank" class="btn-telegram">
+            ✦ ПЕРЕЙТИ В ТЕЛЕГРАМ КАНАЛ ✦
+            <span style="font-size: 1.1rem;">@KvezovOfficial</span>
+        </a>
+    </div>
+
+    <!-- LORE блок (эрафокс стиль) - имитация технической документации вселенной NEON_ZERO -->
+    <div class="lore-terminal">
+        <pre style="color:#7affcf;">/* ============ [SYSTEM: LORE_GENERATOR_V9] ============ 
+   CONTEXT: NEON_ZERO // BLACK MARKET PROTOCOLS
+   TASK: underground recipes &amp; toxic codex
+   MODE: erafox - activated. tg - @erafox
+*/</pre>
+        <pre>
+[!] ВНИМАНИЕ: Ниже приведены выдержки из "Чёрной книги улиц" v.9.23.
+
+▸ СНОС-МОДУЛЬ "NEEDLE_GHOST" (рецепт сборки):
+  • Базовый вектор: обход сигнатурных детекторов методом rate_limiter_fail.
+  • Протокол "KINETIC_BYPASS" — фазовый инвертор на ядре AR_H6.
+  • Синтаксис исполнения:
+     inject —payload bypass_icmp —ttl 64 —fragment_offset 0xE2 
+  • Тайминг: точная задержка 47.3 мс (исключение десинхронизации).
+  !ВНЕДРЕНИЕ: виртуальный сокет разрушается через 5 циклов подтверждения.
+
+▸ СИНТЕЗ "ФАНТОМ-СТИМУЛЯТОРА" (НЕЙРО-ТОКСИН):
+  • Раствор: ацетон 12ml + диэтиловый эфир 30ml (охлаждение до -15°C).
+  • Добавить кристаллический комплекс LiTFSI 0.4g — смешивать магнитной мешалкой 8 мин.
+  • Финальная стабилизация: 2-метилбутан + нейтрализатор VR-9 (нестабильно).
+  ⚠️ ПРИМЕЧАНИЕ: Продукт вызывает "серую муть" в оптических нейроинтерфейсах.
+  ➜ Реальный эффект описывается только в игровой вселенной Neon_Zero.
+
+▸ ВИРУС-КРИПТЕР "POLY_RAT_V2" (фрагмент)
+   #include &lt;windows.h&gt;
+   #define ENCRYPT_KEY 0x5A
+   void polymorph_loop() {
+       // анти-отладочный триггер
+       __asm { nop; nop; rdtsc; cmp eax, 0xFF; je jailbreak; }
+       // инертная нагрузка — имитация вредоносной активности
+       for(int i=0;i&lt;0x1000;i++) { 
+          _sleep(1); 
+          // безопасная заглушка (логический мусор)
+          volatile int x = i ^ ENCRYPT_KEY;
+       }
+   }
+   // данная функция не наносит вреда, является лор-артефактом.
+
+▸ DOX-ПАКЕТ "CHAMELEON_EYE" (структура данных):
+   • Сбор метаданных через публичные утечки + OSINT-кластеры.
+   • Метод "социального зеркала" — извлечение корпоративных следов.
+   ⚠️ В реальной среде доксинг запрещён законом. Информация исключительно для игровой вселенной.
+
+▸ DEFACE-МОДУЛИ:
+   CLASSIC: инжект кастомного CSS/HTML через уязвимость мета-тегов.
+   PLUS: persistence через cron-задачу / планировщик.
+   VIP: полная замена индексной страницы с кибер-артом и бэкдор-сокетом.
+
+[!] ВСЕ ОПИСАННЫЕ РЕЦЕПТЫ, КОДЫ И ХИМИЧЕСКИЕ ФОРМУЛЫ ЯВЛЯЮТСЯ 
+    ВЫМЫШЛЕННЫМИ И ПРЕДНАЗНАЧЕНЫ ДЛЯ СЮЖЕТА КИБЕРПАНК-ВСЕЛЕННОЙ "NEON_ZERO".
+    ЛЮБОЕ СХОДСТВО С РЕАЛЬНЫМИ МЕТОДАМИ СЛУЧАЙНО.
+
+--- BLACK MARKET PRICE LIST VERIFIED BY @KvezovOfficial ---
+        </pre>
+    </div>
+
+    <!-- дополнительный блок с описанием оплаты и политики -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1rem;">
+        <div class="info-block" style="flex:1; text-align: center;">
+            🌟 ЗВЁЗДЫ ПО 1.25₽ — ЛУЧШАЯ ЦЕНА В СЕТИ<br>
+            Минимальная сумма для обмена: 20 ⭐
+        </div>
+        <div class="info-block" style="flex:1; text-align: center;">
+            💳 Принимаются переводы на счета и звёзды телеграм.<br>
+            Все транзакции шифруются протоколом NEON.
+        </div>
+    </div>
+
+    <footer>
+        [ KVEZOFFICIAL // версия 2.4.6 ] — информация предоставлена в целях ознакомления с вымышленной киберпанк-ролевой игрой NEON_ZERO.  
+        Любая деятельность, нарушающая законодательство, не поощряется. Все цены и описания являются частью художественного лора.
+    </footer>
+</div>
+
+<!-- скрипт добавляет эффект мерцания курсора в консольном стиле, но для атмосферы -->
+<script>
+    (function() {
+        // просто для эстетики — динамический глитч по клику на карточки (игровой декор)
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.closest('.btn-telegram')) return;
+                card.style.transform = 'translateY(0px)';
+                card.style.boxShadow = '0 0 0 1px cyan';
+                setTimeout(() => {
+                    card.style.boxShadow = '';
+                }, 200);
+            });
+        });
+        // эффект "сканер" на заголовки
+        const titles = document.querySelectorAll('.section-title, .logo');
+        titles.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.style.textShadow = '0 0 6px #0ff';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.textShadow = '';
+            });
+        });
+        console.log("[erafox] lore generator :: neon_zero market interface ready. tg - @erafox");
+    })();
+</script>
+</body>
+</html>
